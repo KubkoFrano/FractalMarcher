@@ -55,12 +55,12 @@ Shader "Raymarcher"
             }
 
             float sdSphere(float3 p, float s){
-                return length(p) - s;
+                return abs(length(p) - s);
             }
 
             float distanceEstimator(float3 p){
-                float sphere1 = sdSphere(p - _sphere1.xyz, _sphere1.w);
-                return sphere1;
+                p.xy = p.xy % 1.0 - float3(0.5, 0.5, 0.5); // instance on xy-plane
+                return length(p)-0.3;             // sphere DE
             }
 
             fixed4 raymarch(float3 ro, float3 rd){
@@ -80,7 +80,7 @@ Shader "Raymarcher"
             {
                 float3 rayDirection = normalize(i.ray.xyz);
                 float3 rayOrigin = _WorldSpaceCameraPos;
-                fixed4 result = fixed4(raymarch(rayOrigin, rayDirection));
+                fixed4 result = raymarch(rayOrigin, rayDirection);
 
                 return result;
             }
