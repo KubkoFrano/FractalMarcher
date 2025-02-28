@@ -7,6 +7,15 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField]
     private Shader _shader;
 
+    [SerializeField]
+    private int _maxSteps;
+
+    [SerializeField]
+    private float _minDistance;
+
+    [SerializeField]
+    private Vector4 _sphere1;
+
     public Material _raymarchMaterial
     {
         get
@@ -46,7 +55,9 @@ public class RaymarchCamera : MonoBehaviour
 
         _raymarchMaterial.SetMatrix("_CamFrustum", CamFrustum(_camera));
         _raymarchMaterial.SetMatrix("_CamToWorld", _camera.cameraToWorldMatrix);
-        _raymarchMaterial.SetVector("_CamWorldSpace", _camera.transform.position);
+        _raymarchMaterial.SetInt("_maxSteps", _maxSteps);
+        _raymarchMaterial.SetFloat("_minDistance", _minDistance);
+        _raymarchMaterial.SetVector("_sphere1", _sphere1);
 
         RenderTexture.active = destination;
         GL.PushMatrix();
