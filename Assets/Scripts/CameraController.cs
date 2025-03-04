@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
 
     private Vector2 moveInput;
     private Vector2 lookInput;
+    private float rotationX = 0;
 
     private void Start()
     {
@@ -24,7 +25,10 @@ public class CameraController : MonoBehaviour
         transform.Translate(move, Space.Self);
 
         transform.Rotate(Vector3.up * lookInput.x * lookSpeed, Space.World);
-        transform.Rotate(Vector3.left * lookInput.y * lookSpeed);
+
+        rotationX -= lookInput.y * lookSpeed;
+        rotationX = Mathf.Clamp(rotationX, -90f, 90f);
+        transform.localRotation = Quaternion.Euler(rotationX, transform.eulerAngles.y, 0f);
     }
 
     public void Move(InputAction.CallbackContext context)

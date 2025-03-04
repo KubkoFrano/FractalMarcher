@@ -16,6 +16,9 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField]
     private Vector4 _sphere1;
 
+    [SerializeField] private int _iterations;
+    [SerializeField] private float _scale;
+
     public Material _raymarchMaterial
     {
         get
@@ -58,6 +61,9 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetInt("_maxSteps", _maxSteps);
         _raymarchMaterial.SetFloat("_minDistance", _minDistance);
         _raymarchMaterial.SetVector("_sphere1", _sphere1);
+
+        _raymarchMaterial.SetInt("_iterations", _iterations);
+        _raymarchMaterial.SetFloat("_scale", _scale);
 
         RenderTexture.active = destination;
         GL.PushMatrix();
