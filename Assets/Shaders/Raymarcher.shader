@@ -87,12 +87,38 @@ Shader "Raymarcher"
 	            return length(z) * pow(_scale, float(-n));
             }
 
+            float DEmandel(float3 pos) {
+                float Power = 8.0;
+	            float3 z = pos;
+	            float dr = 1.0;
+	            float r = 0.0;
+	            for (int i = 0; i < _iterations ; i++) {
+		            r = length(z);
+		            if (r>1.15) break;
+		
+		            // convert to polar coordinates
+		            float theta = acos(z.z/r);
+		            float phi = atan(z.y/z.x);
+		            dr =  pow( r, Power-1.0)*Power*dr + 1.0;
+		
+		            // scale and rotate the point
+		            float zr = pow( r,Power);
+		            theta = theta*Power;
+		            phi = phi*Power;
+		
+		            // convert back to cartesian coordinates
+		            z = zr*float3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+		            z+=pos;
+	            }
+	            return 0.5*log(r)*r/dr;
+            }
+
             fixed4 raymarch(float3 ro, float3 rd){
                 float t = 0;
                 int steps;
                 for (steps = 0; steps < _maxSteps; steps++){
                     float3 p = ro + rd * t;
-                    float d = DE(p);
+                    float d = DEmandel(p);
                     t += d;
                     if (d < _minDistance) break;
                 }
