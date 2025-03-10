@@ -26,6 +26,9 @@ Shader "Raymarcher"
 
             uniform int _iterations;
             uniform float _scale;
+            uniform float _power;
+
+            uniform float3 _color1, _color2, _color3;
 
             struct appdata
             {
@@ -87,43 +90,54 @@ Shader "Raymarcher"
 	            return length(z) * pow(_scale, float(-n));
             }
 
-            float DEmandel(float3 pos) {
-                float Power = 8.0;
+            float DEmandel(float3 pos, out float smoothIter) {
 	            float3 z = pos;
 	            float dr = 1.0;
 	            float r = 0.0;
-	            for (int i = 0; i < _iterations ; i++) {
+                int i = 0;
+	            for (; i < _iterations ; i++) {
 		            r = length(z);
-		            if (r>1.15) break;
+		            if (r > 1.15) break;
 		
 		            // convert to polar coordinates
-		            float theta = acos(z.z/r);
-		            float phi = atan(z.y/z.x);
-		            dr =  pow( r, Power-1.0)*Power*dr + 1.0;
+		            float theta = acos(z.z / r);
+		            float phi = atan2(z.y, z.x);
+		            dr =  pow(r, _power - 1.0) * _power*dr + 1.0;
 		
 		            // scale and rotate the point
-		            float zr = pow( r,Power);
-		            theta = theta*Power;
-		            phi = phi*Power;
+		            float zr = pow(r, _power);
+		            theta = theta  *_power;
+		            phi = phi * _power;
 		
 		            // convert back to cartesian coordinates
-		            z = zr*float3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+		            z = zr * float3(sin(theta) * cos(phi), sin(phi) * sin(theta), cos(theta));
 		            z+=pos;
 	            }
+
+                smoothIter = float(i) + log(log(1.15)) / log(_power) - log(log(r)) / log(_power);
 	            return 0.5*log(r)*r/dr;
             }
 
             fixed4 raymarch(float3 ro, float3 rd){
                 float t = 0;
+                float smoothIter = 0;
                 int steps;
+
                 for (steps = 0; steps < _maxSteps; steps++){
                     float3 p = ro + rd * t;
-                    float d = DEmandel(p);
+                    float d = DEmandel(p, smoothIter);
                     t += d;
                     if (d < _minDistance) break;
                 }
 
-                return 1.0 - float(steps) / float(_maxSteps);
+                //Normalize for coloring
+                float normalizedIter = smoothIter / float(_iterations);
+
+                //Smooth gradient color blending
+                float3 resultColor = lerp(_color1, _color2, normalizedIter);
+                resultColor = lerp(resultColor, _color3, normalizedIter * normalizedIter);
+
+                return fixed4(resultColor, 1.0);
             }
 
             fixed4 frag (v2f i) : SV_Target

@@ -45,6 +45,5 @@ public class CameraController : MonoBehaviour
     {
         float scrollValue = context.ReadValue<float>();
         moveSpeed = Mathf.Clamp(moveSpeed * ( 1 + scrollValue * updateSpeedBy), minSpeed, maxSpeed);
-        Debug.Log(moveSpeed);
     }
 }

@@ -324,11 +324,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shader: {fileID: 4800000, guid: 8f0fa74f1fcd4414f99c3bebd59a216d, type: 3}
-  _maxSteps: 64
-  _minDistance: 0.00001
+  _maxSteps: 128
+  _minDistance: 0.0000001
   _sphere1: {x: 0, y: 0, z: -0, w: 1.5}
+  _color1: {r: 1, g: 0, b: 0, a: 0}
+  _color2: {r: 0, g: 1, b: 0, a: 0}
+  _color3: {r: 0, g: 0, b: 1, a: 0}
   _iterations: 70
   _scale: 1.6
+  _power: 8
 --- !u!114 &829904416
 MonoBehaviour:
   m_ObjectHideFlags: 0

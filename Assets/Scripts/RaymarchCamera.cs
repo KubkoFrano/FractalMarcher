@@ -16,8 +16,13 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField]
     private Vector4 _sphere1;
 
+    [SerializeField] private Color _color1;
+    [SerializeField] private Color _color2;
+    [SerializeField] private Color _color3;
+
     [SerializeField] private int _iterations;
     [SerializeField] private float _scale;
+    [SerializeField] private float _power;
 
     public Material _raymarchMaterial
     {
@@ -62,8 +67,13 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetFloat("_minDistance", _minDistance);
         _raymarchMaterial.SetVector("_sphere1", _sphere1);
 
+        _raymarchMaterial.SetVector("_color1", _color1);
+        _raymarchMaterial.SetVector("_color2", _color2);
+        _raymarchMaterial.SetVector("_color3", _color3);
+
         _raymarchMaterial.SetInt("_iterations", _iterations);
         _raymarchMaterial.SetFloat("_scale", _scale);
+        _raymarchMaterial.SetFloat("_power", _power);
 
         RenderTexture.active = destination;
         GL.PushMatrix();
