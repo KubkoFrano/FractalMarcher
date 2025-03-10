@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lookSpeed = 0.5f;
     [SerializeField] private float updateSpeedBy = 0.2f;
-    [SerializeField] private float minSpeed = 1;
+    [SerializeField] private float minSpeed = 0.00001f;
     [SerializeField] private float maxSpeed = 10;
 
     private Vector2 moveInput;
@@ -44,6 +44,7 @@ public class CameraController : MonoBehaviour
     public void SetSpeed(InputAction.CallbackContext context)
     {
         float scrollValue = context.ReadValue<float>();
-        moveSpeed = Mathf.Clamp(moveSpeed + scrollValue * updateSpeedBy, minSpeed, maxSpeed);
+        moveSpeed = Mathf.Clamp(moveSpeed * ( 1 + scrollValue * updateSpeedBy), minSpeed, maxSpeed);
+        Debug.Log(moveSpeed);
     }
 }
