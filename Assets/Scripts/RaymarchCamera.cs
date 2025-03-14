@@ -66,11 +66,6 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetMatrix("_CamToWorld", _camera.cameraToWorldMatrix);
         _raymarchMaterial.SetInt("_maxSteps", _maxSteps);
         _raymarchMaterial.SetFloat("_minDistance", _minDistance);
-        _raymarchMaterial.SetVector("_sphere1", _sphere1);
-
-        _raymarchMaterial.SetVector("_color1", _color1);
-        _raymarchMaterial.SetVector("_color2", _color2);
-        _raymarchMaterial.SetVector("_color3", _color3);
 
         _raymarchMaterial.SetInt("_iterations", _iterations);
         _raymarchMaterial.SetFloat("_scale", _scale);
