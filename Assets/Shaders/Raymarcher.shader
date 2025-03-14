@@ -109,7 +109,7 @@ Shader "Raymarcher"
 
                 float3 p = ro + rd * t;
 
-                float eps = 0.01;
+                float eps = _minDistance;
                 float3 n =  normalize(float3(
                     DE(p + float3(eps, 0, 0)) - DE(p - float3(eps, 0, 0)),
                     DE(p + float3(0, eps, 0)) - DE(p - float3(0, eps, 0)),
