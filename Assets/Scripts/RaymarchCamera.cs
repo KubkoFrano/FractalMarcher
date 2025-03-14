@@ -14,13 +14,6 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField]
     private float _minDistance;
 
-    [SerializeField]
-    private Vector4 _sphere1;
-
-    [SerializeField] private Color _color1;
-    [SerializeField] private Color _color2;
-    [SerializeField] private Color _color3;
-
     [SerializeField] private int _iterations;
     [SerializeField] private float _scale;
     [SerializeField] private float _power;
