@@ -69,28 +69,7 @@ Shader "Raymarcher"
                 return length(p)-0.3;             // sphere DE
             }
 
-            float DE(float3 z)
-            {
-	            float3 a1 = float3(1,1,1);
-	            float3 a2 = float3(-1,-1,1);
-	            float3 a3 = float3(1,-1,-1);
-	            float3 a4 = float3(-1,1,-1);
-	            float3 c;
-	            int n = 0;
-	            float dist, d;
-	            while (n < _iterations) {
-		             c = a1; dist = length(z-a1);
-	                 d = length(z-a2); if (d < dist) { c = a2; dist=d; }
-		             d = length(z-a3); if (d < dist) { c = a3; dist=d; }
-		             d = length(z-a4); if (d < dist) { c = a4; dist=d; }
-		            z = _scale*z-c*(_scale-1.0);
-		            n++;
-	            }
-
-	            return length(z) * pow(_scale, float(-n));
-            }
-
-            float DEmandel(float3 pos, out float smoothIter) {
+            float DE(float3 pos) {
 	            float3 z = pos;
 	            float dr = 1.0;
 	            float r = 0.0;
@@ -114,30 +93,30 @@ Shader "Raymarcher"
 		            z+=pos;
 	            }
 
-                smoothIter = float(i) + log(log(1.15)) / log(_power) - log(log(r)) / log(_power);
 	            return 0.5*log(r)*r/dr;
             }
 
             fixed4 raymarch(float3 ro, float3 rd){
                 float t = 0;
-                float smoothIter = 0;
                 int steps;
 
                 for (steps = 0; steps < _maxSteps; steps++){
                     float3 p = ro + rd * t;
-                    float d = DEmandel(p, smoothIter);
+                    float d = DE(p);
                     t += d;
                     if (d < _minDistance) break;
                 }
 
-                //Normalize for coloring
-                float normalizedIter = smoothIter / float(_iterations);
+                float3 p = ro + rd * t;
 
-                //Smooth gradient color blending
-                float3 resultColor = lerp(_color1, _color2, normalizedIter);
-                resultColor = lerp(resultColor, _color3, normalizedIter * normalizedIter);
+                float eps = 0.01;
+                float3 n =  normalize(float3(
+                    DE(p + float3(eps, 0, 0)) - DE(p - float3(eps, 0, 0)),
+                    DE(p + float3(0, eps, 0)) - DE(p - float3(0, eps, 0)),
+                    DE(p + float3(0, 0, eps)) - DE(p - float3(0, 0, eps))
+                ));
 
-                return fixed4(resultColor, 1.0);
+                return fixed4(n, 1.0);
             }
 
             fixed4 frag (v2f i) : SV_Target
