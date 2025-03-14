@@ -22,13 +22,9 @@ Shader "Raymarcher"
             uniform float4x4 _CamFrustum, _CamToWorld;
             uniform int _maxSteps;
             uniform float _minDistance;
-            uniform float4 _sphere1;
 
             uniform int _iterations;
-            uniform float _scale;
             uniform float _power;
-
-            uniform float3 _color1, _color2, _color3;
 
             struct appdata
             {

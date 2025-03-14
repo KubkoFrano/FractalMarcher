@@ -15,7 +15,6 @@ public class RaymarchCamera : MonoBehaviour
     private float _minDistance;
 
     [SerializeField] private int _iterations;
-    [SerializeField] private float _scale;
     [SerializeField] private float _power;
 
     public Material _raymarchMaterial
@@ -61,7 +60,6 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetFloat("_minDistance", _minDistance);
 
         _raymarchMaterial.SetInt("_iterations", _iterations);
-        _raymarchMaterial.SetFloat("_scale", _scale);
         _raymarchMaterial.SetFloat("_power", _power);
 
         RenderTexture.active = destination;
