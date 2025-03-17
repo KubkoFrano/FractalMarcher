@@ -21,7 +21,9 @@ Shader "Raymarcher"
             sampler2D _MainTex;
             uniform float4x4 _CamFrustum, _CamToWorld;
             uniform int _maxSteps;
-            uniform float _minDistance;
+
+            uniform float _epsilonMin;
+            uniform float _epsilonMax;
 
             uniform int _iterations;
             uniform float _power;
@@ -92,6 +94,10 @@ Shader "Raymarcher"
 	            return 0.5*log(r)*r/dr;
             }
 
+            float epsilon(float d){
+                return clamp(d / 550.0, _epsilonMin, _epsilonMax);
+            }
+
             fixed4 raymarch(float3 ro, float3 rd){
                 float t = 0;
                 int steps;
@@ -100,12 +106,12 @@ Shader "Raymarcher"
                     float3 p = ro + rd * t;
                     float d = DE(p);
                     t += d;
-                    if (d < _minDistance) break;
+                    if (d < epsilon(t)) break;
                 }
 
                 float3 p = ro + rd * t;
 
-                float eps = _minDistance;
+                float eps = epsilon(t);
                 float3 n =  normalize(float3(
                     DE(p + float3(eps, 0, 0)) - DE(p - float3(eps, 0, 0)),
                     DE(p + float3(0, eps, 0)) - DE(p - float3(0, eps, 0)),

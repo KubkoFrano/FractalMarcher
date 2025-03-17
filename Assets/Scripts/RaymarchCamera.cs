@@ -11,8 +11,8 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField]
     private int _maxSteps;
 
-    [SerializeField]
-    private float _minDistance;
+    [SerializeField] private float _epsilonMin;
+    [SerializeField] private float _epsilonMax;
 
     [SerializeField] private int _iterations;
     [SerializeField] private float _power;
@@ -57,7 +57,9 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetMatrix("_CamFrustum", CamFrustum(_camera));
         _raymarchMaterial.SetMatrix("_CamToWorld", _camera.cameraToWorldMatrix);
         _raymarchMaterial.SetInt("_maxSteps", _maxSteps);
-        _raymarchMaterial.SetFloat("_minDistance", _minDistance);
+
+        _raymarchMaterial.SetFloat("_epsilonMin", _epsilonMin);
+        _raymarchMaterial.SetFloat("_epsilonMax", _epsilonMax);
 
         _raymarchMaterial.SetInt("_iterations", _iterations);
         _raymarchMaterial.SetFloat("_power", _power);
@@ -107,39 +109,5 @@ public class RaymarchCamera : MonoBehaviour
         frustum.SetRow(3, BL);
 
         return frustum;
-    }
-
-    private float distanceFromMandelbulb()
-    {
-        Vector3 z = transform.position;
-        float dr = 1f;
-        float r = 0f;
-        int i = 0;
-        for (; i < _iterations; i++)
-        {
-            r = z.magnitude;
-            if (r > 1.15) break;
-
-            // convert to polar coordinates
-            float theta = Mathf.Acos(z.z / r);
-            float phi = Mathf.Atan2(z.y, z.x);
-            dr = Mathf.Pow(r, _power - 1f) * _power * dr + 1f;
-
-            // scale and rotate the point
-            float zr = Mathf.Pow(r, _power);
-            theta = theta * _power;
-            phi = phi * _power;
-
-            // convert back to cartesian coordinates
-            z = zr * new Vector3(Mathf.Sin(theta) * Mathf.Cos(phi), Mathf.Sin(phi) * Mathf.Sin(theta), Mathf.Cos(theta));
-            z += transform.position;
-        }
-
-        return 0.5f * Mathf.Log(r) * r / dr;
-    }
-
-    private void Update()
-    {
-        _minDistance = Mathf.Clamp(distanceFromMandelbulb() / 1000, 0.0000001f, 0.001f);
     }
 }
