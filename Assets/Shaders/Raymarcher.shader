@@ -28,6 +28,9 @@ Shader "Raymarcher"
             uniform int _iterations;
             uniform float _power;
 
+            uniform float4 _lights[6];
+            uniform float4 _colors[6];
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -98,6 +101,18 @@ Shader "Raymarcher"
                 return clamp(d / 550.0, _epsilonMin, _epsilonMax);
             }
 
+            float3 calculateColor(float3 p, float3 n, float3 c){
+                float3 result = float3(0.0, 0.0, 0.0);
+
+                for (int i = 0; i < 6; i++){
+                    float3 dir = normalize(p - _lights[i]);
+                    float diff = max(0.0, dot(n, -dir));
+                    result += _colors[i] * diff;
+                }
+
+                return result * c * 2;
+            }
+
             fixed4 raymarch(float3 ro, float3 rd){
                 float t = 0;
                 int steps;
@@ -109,6 +124,7 @@ Shader "Raymarcher"
                     if (d < epsilon(t)) break;
                 }
 
+                // calculate normal
                 float3 p = ro + rd * t;
 
                 float eps = epsilon(t);
@@ -118,7 +134,10 @@ Shader "Raymarcher"
                     DE(p + float3(0, 0, eps)) - DE(p - float3(0, 0, eps))
                 ));
 
-                return fixed4(n, 1.0);
+                float gray = float(steps) / float(_maxSteps);
+
+                // add lighting
+                return fixed4(calculateColor(p, n, float3(gray, gray, gray)), 1.0);
             }
 
             fixed4 frag (v2f i) : SV_Target

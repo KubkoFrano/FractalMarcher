@@ -1,5 +1,5 @@
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Camera))]
 [ExecuteInEditMode]
@@ -16,6 +16,9 @@ public class RaymarchCamera : MonoBehaviour
 
     [SerializeField] private int _iterations;
     [SerializeField] private float _power;
+
+    [SerializeField] private Vector3[] _lights = new Vector3[6];
+    [SerializeField] private Color[] _colors = new Color[6];
 
     public Material _raymarchMaterial
     {
@@ -64,6 +67,9 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetInt("_iterations", _iterations);
         _raymarchMaterial.SetFloat("_power", _power);
 
+        _raymarchMaterial.SetVectorArray("_lights", ConvertLights(_lights));
+        _raymarchMaterial.SetVectorArray("_colors", ConvertColors(_colors));
+
         RenderTexture.active = destination;
         GL.PushMatrix();
         GL.LoadOrtho();
@@ -109,5 +115,25 @@ public class RaymarchCamera : MonoBehaviour
         frustum.SetRow(3, BL);
 
         return frustum;
+    }
+
+    private List<Vector4> ConvertLights(Vector3[] lights)
+    {
+        List<Vector4> result = new List<Vector4>();
+        foreach (Vector3 light in lights)
+        {
+            result.Add(new Vector4(light.x, light.y, light.z, 0f));
+        }
+        return result;
+    }
+
+    private List<Vector4> ConvertColors(Color[] colors)
+    {
+        List<Vector4> result = new List<Vector4>();
+        foreach (Color color in colors)
+        {
+            result.Add(new Vector4(color.r, color.g, color.b, color.a));
+        }
+        return result;
     }
 }
