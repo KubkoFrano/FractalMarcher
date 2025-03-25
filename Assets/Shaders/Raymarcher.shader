@@ -107,10 +107,10 @@ Shader "Raymarcher"
 	            return float4(complex, real);
             }
 
-            float DEJulia(float3 p, float4 seed)
+            float DEJulia(float3 p)
             {
                 // Set C to be a vector of constants determining julia set we use
-	            float4 C = seed;
+	            float4 C = _seed;
     
                 // Set Z to be some form of input from the vector
 	            float4 Z = float4(p.z, p.y, _par, p.x);
@@ -147,6 +147,99 @@ Shader "Raymarcher"
 
             }
 
+            float DEexp(float3 p){
+    
+                // I'm never sure whether I should take constant stuff like the following outside the function, 
+                // or not. My 1990s CPU brain tells me outside, but it doesn't seem to make a difference to frame 
+                // rate in this environment one way or the other, so I'll keep it where it looks tidy. If a GPU
+                // architecture\compiler expert is out there, feel free to let me know.
+    
+                const float3 offs = float3(1, .75, .5); // Offset point.
+                const float2 a = sin(float2(0, 1.57079632) + 1.57/2.);
+                const float2x2 m = float2x2(a.y, -a.x, a);
+                const float2 a2 = sin(float2(0, 1.57079632) + 1.57/4.0);
+                const float2x2 m2 = float2x2(a2.y, -a2.x, a2);
+    
+                const float s = 5.; // Scale factor.
+    
+                const float sz = .0355; // Box size.
+                #ifdef WIREFRAME
+                const float ew = .015; // Wireframe box edge width.
+                #endif
+    
+                float d = 1e5; // Distance.
+    
+    
+                p  = abs(frac(p*.5)*2. - 1.); // Standard spacial repetition.
+     
+    
+                float amp = 1./s; // Analogous to layer amplitude.
+    
+   
+                // With only two iterations, you could unroll this for more speed,
+                // but I'm leaving it this way for anyone who wants to try more
+                // iterations.
+                for(int i=0; i<2; i++){
+        
+                    // Rotating.
+                    p.xy = mul(m, p.xy);
+                    p.yz = mul(m2, p.yz);
+        
+                    p = abs(p);
+                    //p = sqrt(p*p + .03);
+                    //p = smin(p, -p, -.5); // Etc.
+        
+  		            // Folding about tetrahedral planes of symmetry... I think, or is it octahedral? 
+                    // I should know this stuff, but topology was many years ago for me. In fact, 
+                    // everything was years ago. :)
+		            // Branchless equivalent to: if (p.x<p.y) p.xy = p.yx;
+                    p.xy += step(p.x, p.y)*(p.yx - p.xy);
+                    p.xz += step(p.x, p.z)*(p.zx - p.xz);
+                    p.yz += step(p.y, p.z)*(p.zy - p.yz);
+ 
+                    // Stretching about an offset.
+		            p = p*s + offs*(1. - s);
+        
+		            // Branchless equivalent to:
+                    // if( p.z < offs.z*(1. - s)*.5)  p.z -= offs.z*(1. - s);
+                    p.z -= step(p.z, offs.z*(1. - s)*.5)*offs.z*(1. - s);
+        
+                    // Loosely speaking, construct an object, and combine it with
+                    // the object from the previous iteration. The object and
+                    // comparison are a cube and minimum, but all kinds of 
+                    // combinations are possible.
+                    p = abs(p);
+                    float3 q = p*amp;
+                    //d = min(d, max(max(p.x, p.y), p.z)*amp - .035);
+        
+                    // The object you draw is up to you. There are countless options.
+
+                    //float3 qq = abs(q);
+                    //float2 h = float2(.2,.1);
+                    //float box =  max(qq.z-h.y,max(qq.x*0.866025+q.y*0.5,-q.y)-h.x*0.5);
+                    //float box = max(max(q.x, q.y), q.z) - sz;
+                    //box = min(box, max(max(q.y, q.z) - sz*.33, q.x - sz*1.1));
+                    //float box = max(length(q.yz) - sz*1.2, q.x - sz);
+                    float box = length(q) - sz; // A very spherical box. :)
+                    #ifdef WIREFRAME
+                    box = max(box, -(min(min(max(q.x, q.y), max(q.x, q.z)), max(q.y, q.z)) - sz + ew));
+                    //box = max(box, -max(length(q.yz) - ew, q.x - sz - ew));
+                    //box = max(box, -(max(length(q.yz - sz*.5) - ew*.35, q.x - sz - ew*.5)));
+                    //box = max(box, -(max(q.y, q.z) - sz + ew));
+                    #endif
+                    // Vertices, of sorts.
+                    //q = abs(q) - sz;
+                    //box = min(box, length(q) - sz/3.);
+                    d = min(d, box);
+        
+        
+                    amp /= s; // Decrease the amplitude by the scaling factor.
+        
+                }
+ 
+ 	            return d; // Return the distance.
+            }
+
             float epsilon(float d){
                 return clamp(d / 550.0, _epsilonMin, _epsilonMax);
             }
@@ -169,7 +262,7 @@ Shader "Raymarcher"
 
                 for (steps = 0; steps < _maxSteps; steps++){
                     float3 p = ro + rd * t;
-                    float d = DEJulia(p, _seed);
+                    float d = DEJulia(p);
                     t += d;
                     if (d < epsilon(t)) break;
                 }
@@ -179,9 +272,9 @@ Shader "Raymarcher"
 
                 float eps = epsilon(t);
                 float3 n =  normalize(float3(
-                    DE(p + float3(eps, 0, 0)) - DE(p - float3(eps, 0, 0)),
-                    DE(p + float3(0, eps, 0)) - DE(p - float3(0, eps, 0)),
-                    DE(p + float3(0, 0, eps)) - DE(p - float3(0, 0, eps))
+                    DEJulia(p + float3(eps, 0, 0)) - DEJulia(p - float3(eps, 0, 0)),
+                    DEJulia(p + float3(0, eps, 0)) - DEJulia(p - float3(0, eps, 0)),
+                    DEJulia(p + float3(0, 0, eps)) - DEJulia(p - float3(0, 0, eps))
                 ));
 
                 float gray = float(steps) / float(_maxSteps);

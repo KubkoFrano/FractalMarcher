@@ -326,7 +326,7 @@ MonoBehaviour:
   _shader: {fileID: 4800000, guid: 8f0fa74f1fcd4414f99c3bebd59a216d, type: 3}
   _maxSteps: 128
   _epsilonMin: 0.0000001
-  _epsilonMax: 0.01
+  _epsilonMax: 0.0001
   _iterations: 70
   _power: 8
   _lights:
@@ -343,6 +343,11 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 1, a: 0}
   - {r: 0, g: 0, b: 1, a: 0}
+  _seedX: -0.15
+  _seedY: -0.15
+  _seedZ: 0
+  _seedW: -0.75
+  _par: 0
 --- !u!114 &829904416
 MonoBehaviour:
   m_ObjectHideFlags: 0

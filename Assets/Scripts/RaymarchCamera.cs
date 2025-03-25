@@ -20,10 +20,10 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField] private Vector3[] _lights = new Vector3[6];
     [SerializeField] private Color[] _colors = new Color[6];
 
-    [SerializeField][Range(0f, 1f)] private float _seedX;
-    [SerializeField][Range(0f, 1f)] private float _seedY;
-    [SerializeField][Range(0f, 1f)] private float _seedZ;
-    [SerializeField][Range(0f, 1f)] private float _seedW;
+    [SerializeField][Range(-1f, 1f)] private float _seedX;
+    [SerializeField][Range(-1f, 1f)] private float _seedY;
+    [SerializeField][Range(-1f, 1f)] private float _seedZ;
+    [SerializeField][Range(-1f, 1f)] private float _seedW;
 
     [SerializeField][Range(0f, 1f)] private float _par;
 
