@@ -31,6 +31,9 @@ Shader "Raymarcher"
             uniform float4 _lights[6];
             uniform float4 _colors[6];
 
+            uniform float4 _seed;
+            uniform float _par;
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -97,6 +100,53 @@ Shader "Raymarcher"
 	            return 0.5*log(r)*r/dr;
             }
 
+            float4 MultiplyQuaternions(float4 a, float4 b)
+            {
+	            float real = a.w*b.w - dot(a.xyz, b.xyz);  
+                float3 complex = (a.w*b.xyz + b.w*a.xyz + cross(a.xyz, b.xyz));
+	            return float4(complex, real);
+            }
+
+            float DEJulia(float3 p, float4 seed)
+            {
+                // Set C to be a vector of constants determining julia set we use
+	            float4 C = seed;
+    
+                // Set Z to be some form of input from the vector
+	            float4 Z = float4(p.z, p.y, _par, p.x);
+    
+                // I'll be honest, I'm not entirely sure how the distance estimation works.
+                // Calculate the derivative of Z. The Julia set we are using is Z^2 + C,
+                // So this results in simply 2z
+	            float4 dz = 2.0*Z + float4(1.0, 1.0, 1.0, 1.0);
+
+                // Run the iterative loop for some number of iterations
+	            for (int i = 0; i < 64; i++)
+	            {
+                    // Recalculate the derivative
+		            dz = 2.0 * MultiplyQuaternions(Z, dz) + float4(1.0, 1.0, 1.0, 1.0);
+        
+                    // Rcacalculate Z
+		            Z = MultiplyQuaternions(Z, Z) + C;
+        
+       	            // We rely on the magnitude of z being fairly large (the derivation includes
+                    // A limit as it approaches infinity) so we're going to let it run for a bit longer
+                    // after we know its going to explode. i.e. 1000 instead of the usual, like 8.
+		            if (dot(Z, Z) > 1000.0)
+		            {
+			            break;
+			            }
+		            }
+    
+                // And this is where the witchcraft happens. Again, not sure how this works, but as
+   	            // you can see, it does.
+	            float d = 0.5*sqrt(dot(Z, Z) / dot(dz, dz))*log(dot(Z, Z)) / log(10.0);
+	
+                // Return the distance estimation.
+                return d;
+
+            }
+
             float epsilon(float d){
                 return clamp(d / 550.0, _epsilonMin, _epsilonMax);
             }
@@ -119,7 +169,7 @@ Shader "Raymarcher"
 
                 for (steps = 0; steps < _maxSteps; steps++){
                     float3 p = ro + rd * t;
-                    float d = DE(p);
+                    float d = DEJulia(p, _seed);
                     t += d;
                     if (d < epsilon(t)) break;
                 }

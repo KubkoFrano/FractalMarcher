@@ -20,6 +20,13 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField] private Vector3[] _lights = new Vector3[6];
     [SerializeField] private Color[] _colors = new Color[6];
 
+    [SerializeField][Range(0f, 1f)] private float _seedX;
+    [SerializeField][Range(0f, 1f)] private float _seedY;
+    [SerializeField][Range(0f, 1f)] private float _seedZ;
+    [SerializeField][Range(0f, 1f)] private float _seedW;
+
+    [SerializeField][Range(0f, 1f)] private float _par;
+
     public Material _raymarchMaterial
     {
         get
@@ -69,6 +76,9 @@ public class RaymarchCamera : MonoBehaviour
 
         _raymarchMaterial.SetVectorArray("_lights", ConvertLights(_lights));
         _raymarchMaterial.SetVectorArray("_colors", ConvertColors(_colors));
+
+        _raymarchMaterial.SetVector("_seed", new Vector4(_seedX, _seedY, _seedZ, _seedW));
+        _raymarchMaterial.SetFloat("_par", _par);
 
         RenderTexture.active = destination;
         GL.PushMatrix();
