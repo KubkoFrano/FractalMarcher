@@ -64,15 +64,6 @@ Shader "Raymarcher"
                 return o;
             }
 
-            float sdSphere(float3 p, float s){
-                return abs(length(p) - s);
-            }
-
-            float distanceEstimator(float3 p){
-                p.xy = p.xy % 1.0 - float3(0.5, 0.5, 0.5); // instance on xy-plane
-                return length(p)-0.3;             // sphere DE
-            }
-
             float DE(float3 pos) {
 	            float3 z = pos;
 	            float dr = 1.0;
