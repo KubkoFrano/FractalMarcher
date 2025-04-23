@@ -100,50 +100,29 @@ Shader "Raymarcher"
 
             float DEJulia(float3 p)
             {
-                // Set C to be a vector of constants determining julia set we use
 	            float4 C = _seed;
-    
-                // Set Z to be some form of input from the vector
 	            float4 Z = float4(p.z, p.y, _par, p.x);
     
-                // I'll be honest, I'm not entirely sure how the distance estimation works.
-                // Calculate the derivative of Z. The Julia set we are using is Z^2 + C,
-                // So this results in simply 2z
 	            float4 dz = 2.0*Z + float4(1.0, 1.0, 1.0, 1.0);
 
-                // Run the iterative loop for some number of iterations
 	            for (int i = 0; i < 64; i++)
 	            {
-                    // Recalculate the derivative
 		            dz = 2.0 * MultiplyQuaternions(Z, dz) + float4(1.0, 1.0, 1.0, 1.0);
-        
-                    // Rcacalculate Z
 		            Z = MultiplyQuaternions(Z, Z) + C;
         
-       	            // We rely on the magnitude of z being fairly large (the derivation includes
-                    // A limit as it approaches infinity) so we're going to let it run for a bit longer
-                    // after we know its going to explode. i.e. 1000 instead of the usual, like 8.
 		            if (dot(Z, Z) > 1000.0)
 		            {
 			            break;
-			            }
-		            }
-    
-                // And this is where the witchcraft happens. Again, not sure how this works, but as
-   	            // you can see, it does.
+			        }
+		        }
+
 	            float d = 0.5*sqrt(dot(Z, Z) / dot(dz, dz))*log(dot(Z, Z)) / log(10.0);
 	
-                // Return the distance estimation.
                 return d;
 
             }
 
             float DEexp(float3 p){
-    
-                // I'm never sure whether I should take constant stuff like the following outside the function, 
-                // or not. My 1990s CPU brain tells me outside, but it doesn't seem to make a difference to frame 
-                // rate in this environment one way or the other, so I'll keep it where it looks tidy. If a GPU
-                // architecture\compiler expert is out there, feel free to let me know.
     
                 const float3 offs = float3(1, .75, .5); // Offset point.
                 const float2 a = sin(float2(0, 1.57079632) + 1.57/2.);
