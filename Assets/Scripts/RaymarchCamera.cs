@@ -8,18 +8,23 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField]
     private Shader _shader;
 
-    [SerializeField]
-    private int _maxSteps;
+    [Header("Ray Marching")]
+    [SerializeField] private int _maxSteps;
 
+    [Header("Epsilon")]
     [SerializeField] private float _epsilonMin;
     [SerializeField] private float _epsilonMax;
 
+    [Header("Lighting")]
+    [SerializeField] private Vector3[] _lights = new Vector3[6];
+    [SerializeField] private Color[] _colors = new Color[6];
+    [SerializeField][Range(0.1f, 2f)] private float _colorMultiplier;
+
+    [Header("Mandelbulb")]
     [SerializeField] private int _iterations;
     [SerializeField] private float _power;
 
-    [SerializeField] private Vector3[] _lights = new Vector3[6];
-    [SerializeField] private Color[] _colors = new Color[6];
-
+    [Header("Quaternion Julia Set")]
     [SerializeField][Range(-1f, 1f)] private float _seedX;
     [SerializeField][Range(-1f, 1f)] private float _seedY;
     [SerializeField][Range(-1f, 1f)] private float _seedZ;
@@ -76,6 +81,7 @@ public class RaymarchCamera : MonoBehaviour
 
         _raymarchMaterial.SetVectorArray("_lights", ConvertLights(_lights));
         _raymarchMaterial.SetVectorArray("_colors", ConvertColors(_colors));
+        _raymarchMaterial.SetFloat("_colorMultiplier", _colorMultiplier);
 
         _raymarchMaterial.SetVector("_seed", new Vector4(_seedX, _seedY, _seedZ, _seedW));
         _raymarchMaterial.SetFloat("_par", _par);

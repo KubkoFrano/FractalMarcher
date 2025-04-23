@@ -20,19 +20,26 @@ Shader "Raymarcher"
 
             sampler2D _MainTex;
             uniform float4x4 _CamFrustum, _CamToWorld;
+
+            //Raymarch
             uniform int _maxSteps;
 
+            //Lighting
+            uniform float4 _lights[6];
+            uniform float4 _colors[6];
+            uniform float _colorMultiplier;
+
+            //Epsilon
             uniform float _epsilonMin;
             uniform float _epsilonMax;
 
-            uniform int _iterations;
-            uniform float _power;
-
-            uniform float4 _lights[6];
-            uniform float4 _colors[6];
-
+            //Julia
             uniform float4 _seed;
             uniform float _par;
+
+            //Mandelbulb
+            uniform int _iterations;
+            uniform float _power;
 
             struct appdata
             {
@@ -223,7 +230,7 @@ Shader "Raymarcher"
                     result += _colors[i] * diff;
                 }
 
-                return result * c * 2;
+                return result * c * _colorMultiplier;
             }
 
             fixed4 raymarch(float3 ro, float3 rd){
