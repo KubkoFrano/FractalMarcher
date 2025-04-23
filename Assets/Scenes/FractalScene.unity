@@ -489,6 +489,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1d97579e-be13-4499-8207-77116e59bf9d
     m_ActionName: 'Player/Scroll[/Mouse/scroll/down,/Mouse/scroll/up]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 829904417}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: PauseResume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ea7ac67f-6b24-4519-9cef-34883fea2ffe
+    m_ActionName: 'Player/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

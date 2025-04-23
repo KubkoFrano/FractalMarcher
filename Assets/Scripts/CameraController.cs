@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 lookInput;
     private float rotationX = 0;
+    private bool canMove = true;
 
     private void Start()
     {
@@ -21,6 +22,9 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (!canMove)
+            return;
+
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed * Time.deltaTime;
         transform.Translate(move, Space.Self);
 
@@ -45,5 +49,27 @@ public class CameraController : MonoBehaviour
     {
         float scrollValue = context.ReadValue<float>();
         moveSpeed = Mathf.Clamp(moveSpeed * ( 1 + scrollValue * updateSpeedBy), minSpeed, maxSpeed);
+    }
+
+    public void PauseResume(InputAction.CallbackContext context)
+    {
+        if (canMove)
+            Pause();
+        else
+            Resume();
+    }
+
+    private void Pause()
+    {
+        canMove = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void Resume()
+    {
+        canMove = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
