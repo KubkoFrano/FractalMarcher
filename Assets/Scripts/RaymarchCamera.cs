@@ -32,6 +32,10 @@ public class RaymarchCamera : MonoBehaviour
 
     [SerializeField][Range(0f, 1f)] private float _par;
 
+    [Header("Fractal")]
+    [SerializeField] private Fractal _fractal; 
+    enum Fractal { Mandelbulb, QuaternionJuliaSet };
+
     public Material _raymarchMaterial
     {
         get
@@ -85,6 +89,8 @@ public class RaymarchCamera : MonoBehaviour
 
         _raymarchMaterial.SetVector("_seed", new Vector4(_seedX, _seedY, _seedZ, _seedW));
         _raymarchMaterial.SetFloat("_par", _par);
+
+        _raymarchMaterial.SetInt("_fractal", (int)_fractal);
 
         RenderTexture.active = destination;
         GL.PushMatrix();

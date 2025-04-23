@@ -341,14 +341,15 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 1, a: 0}
   - {r: 0, g: 0, b: 1, a: 0}
-  _colorMultiplier: 1
+  _colorMultiplier: 2
   _iterations: 70
-  _power: 17.81
+  _power: 8
   _seedX: -0.291
   _seedY: -0.5
   _seedZ: -0.05
   _seedW: -0.67
   _par: 0
+  _fractal: 0
 --- !u!114 &829904416
 MonoBehaviour:
   m_ObjectHideFlags: 0

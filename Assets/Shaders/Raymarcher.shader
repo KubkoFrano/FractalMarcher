@@ -41,6 +41,13 @@ Shader "Raymarcher"
             uniform int _iterations;
             uniform float _power;
 
+            //Choose fractal
+            uniform int _fractal;
+            /*
+                0 -> Mandelbulb
+                1 -> Quaternion Julia Set
+            */
+
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -71,7 +78,7 @@ Shader "Raymarcher"
                 return o;
             }
 
-            float DE(float3 pos) {
+            float DEMandel(float3 pos) {
 	            float3 z = pos;
 	            float dr = 1.0;
 	            float r = 0.0;
@@ -233,13 +240,22 @@ Shader "Raymarcher"
                 return result * c * _colorMultiplier;
             }
 
+            float DE(float3 p){
+                if (_fractal == 0)
+                    return DEMandel(p);
+                else if (_fractal == 0)
+                    return DEJulia(p);
+                else
+                    return 0.0;
+            }
+
             fixed4 raymarch(float3 ro, float3 rd){
                 float t = 0;
                 int steps;
 
                 for (steps = 0; steps < _maxSteps; steps++){
                     float3 p = ro + rd * t;
-                    float d = DEJulia(p);
+                    float d = DE(p);
                     t += d;
                     if (d < epsilon(t)) break;
                 }
@@ -249,9 +265,9 @@ Shader "Raymarcher"
 
                 float eps = epsilon(t);
                 float3 n =  normalize(float3(
-                    DEJulia(p + float3(eps, 0, 0)) - DEJulia(p - float3(eps, 0, 0)),
-                    DEJulia(p + float3(0, eps, 0)) - DEJulia(p - float3(0, eps, 0)),
-                    DEJulia(p + float3(0, 0, eps)) - DEJulia(p - float3(0, 0, eps))
+                    DE(p + float3(eps, 0, 0)) - DE(p - float3(eps, 0, 0)),
+                    DE(p + float3(0, eps, 0)) - DE(p - float3(0, eps, 0)),
+                    DE(p + float3(0, 0, eps)) - DE(p - float3(0, 0, eps))
                 ));
 
                 float gray = float(steps) / float(_maxSteps);
