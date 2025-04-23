@@ -243,7 +243,7 @@ Shader "Raymarcher"
             float DE(float3 p){
                 if (_fractal == 0)
                     return DEMandel(p);
-                else if (_fractal == 0)
+                else if (_fractal == 1)
                     return DEJulia(p);
                 else
                     return 0.0;
