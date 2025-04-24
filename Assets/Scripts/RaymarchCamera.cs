@@ -33,8 +33,7 @@ public class RaymarchCamera : MonoBehaviour
     [SerializeField][Range(0f, 1f)] private float _par;
 
     [Header("Fractal")]
-    [SerializeField] private Fractal _fractal; 
-    private enum Fractal { Mandelbulb, QuaternionJuliaSet };
+    [SerializeField] private Enums.Fractal _fractal; 
 
     public Material _raymarchMaterial
     {

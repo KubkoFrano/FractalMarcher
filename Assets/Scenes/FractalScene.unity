@@ -3194,7 +3194,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573560504}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4280,6 +4280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f07fae26f8c8a84590699af0f4cb5d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 997114452}
   moveSpeed: 1
   lookSpeed: 0.3
   updateSpeedBy: 0.05
@@ -5047,6 +5048,7 @@ GameObject:
   - component: {fileID: 997114450}
   - component: {fileID: 997114449}
   - component: {fileID: 997114451}
+  - component: {fileID: 997114452}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -5154,6 +5156,32 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &997114452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997114447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f73a4a421331743aafdf6d34be6d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mandelbulbSettings:
+  - {fileID: 573560504}
+  - {fileID: 1681146078}
+  - {fileID: 870752764}
+  juliaSettings:
+  - {fileID: 985260671}
+  - {fileID: 2135228390}
+  - {fileID: 1826711996}
+  - {fileID: 1034628940}
+  - {fileID: 1250957230}
+  - {fileID: 662545256}
+  - {fileID: 64474659}
+  - {fileID: 598794130}
+  fractalDropdown: {fileID: 1548324419}
 --- !u!1 &1034628940
 GameObject:
   m_ObjectHideFlags: 0
@@ -7362,7 +7390,19 @@ MonoBehaviour:
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 997114452}
+        m_TargetAssemblyTypeName: Settings, Assembly-CSharp
+        m_MethodName: SelectFractal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1548324420
 MonoBehaviour:

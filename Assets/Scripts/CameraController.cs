@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField] private Settings settings;
+
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lookSpeed = 0.5f;
     [SerializeField] private float updateSpeedBy = 0.2f;
@@ -64,6 +66,7 @@ public class CameraController : MonoBehaviour
         canMove = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        settings.Pause();
     }
 
     private void Resume()
@@ -71,5 +74,6 @@ public class CameraController : MonoBehaviour
         canMove = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        settings.Resume();
     }
 }
