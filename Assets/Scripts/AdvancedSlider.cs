@@ -15,12 +15,12 @@ public class AdvancedSlider : MonoBehaviour
     {
         slider = GetComponentInChildren<Slider>();
         text = GetComponentInChildren<TextMeshProUGUI>();
+        onValueChanged = slider.onValueChanged;
+        slider.onValueChanged.AddListener(UpdateText);
     }
 
     private void Start()
     {
-        slider.onValueChanged.AddListener(UpdateText);
-        onValueChanged = slider.onValueChanged;
         UpdateText(slider.value);
     }
 
@@ -31,7 +31,6 @@ public class AdvancedSlider : MonoBehaviour
 
     public void SetValue(float value)
     {
-        Debug.Log(gameObject.name + " " + slider);
         slider.value = value;
         text.text = value.ToString();
     }

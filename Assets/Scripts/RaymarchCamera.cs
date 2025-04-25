@@ -70,6 +70,8 @@ public class RaymarchCamera : MonoBehaviour
         _raymarchMaterial.SetVectorArray("_colors", ConvertColors(_colors));
         _raymarchMaterial.SetFloat("_colorMultiplier", settings.colorMultiplier);
 
+        Debug.Log(settings.seedX + " " + settings.seedY + " " + settings.seedZ + " " + settings.seedW);
+
         _raymarchMaterial.SetVector("_seed", new Vector4(settings.seedX, settings.seedY, settings.seedZ, settings.seedW));
         _raymarchMaterial.SetFloat("_par", settings.par);
 

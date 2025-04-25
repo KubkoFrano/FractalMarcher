@@ -100,7 +100,7 @@ public class SettingsPanel : MonoBehaviour
         powerInput.onValueChanged.AddListener(value => {if (!string.IsNullOrEmpty(value)) settings.power = int.Parse(value); });
 
         //Julia
-        seedXSlider.onValueChanged.AddListener(value => {settings.seedX = value; });
+        seedXSlider.onValueChanged.AddListener(value => {settings.seedX = value; Debug.Log("set x " + value); });
         seedYSlider.onValueChanged.AddListener(value => {settings.seedY = value; });
         seedZSlider.onValueChanged.AddListener(value => {settings.seedZ = value; });
         seedWSlider.onValueChanged.AddListener(value => {settings.seedW = value; });
@@ -112,8 +112,6 @@ public class SettingsPanel : MonoBehaviour
 
     private void LoadValues()
     {
-        Debug.Log(settings.seedX);
-
         //Ray marching
         maxStepsInput.text = settings.maxSteps.ToString();
 
