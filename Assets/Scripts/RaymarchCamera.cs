@@ -2,38 +2,22 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Camera))]
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class RaymarchCamera : MonoBehaviour
 {
     [SerializeField]
     private Shader _shader;
 
-    [Header("Ray Marching")]
-    [SerializeField] private int _maxSteps;
-
-    [Header("Epsilon")]
-    [SerializeField] private float _epsilonMin;
-    [SerializeField] private float _epsilonMax;
-
     [Header("Lighting")]
     [SerializeField] private Vector3[] _lights = new Vector3[6];
     [SerializeField] private Color[] _colors = new Color[6];
-    [SerializeField][Range(0.1f, 2f)] private float _colorMultiplier;
 
-    [Header("Mandelbulb")]
-    [SerializeField] private int _iterations;
-    [SerializeField] private float _power;
+    Settings settings;
 
-    [Header("Quaternion Julia Set")]
-    [SerializeField][Range(-1f, 1f)] private float _seedX;
-    [SerializeField][Range(-1f, 1f)] private float _seedY;
-    [SerializeField][Range(-1f, 1f)] private float _seedZ;
-    [SerializeField][Range(-1f, 1f)] private float _seedW;
-
-    [SerializeField][Range(0f, 1f)] private float _par;
-
-    [Header("Fractal")]
-    [SerializeField] private Enums.Fractal _fractal; 
+    private void Awake()
+    {
+        settings = Settings.GetInstance(); ;
+    }
 
     public Material _raymarchMaterial
     {
@@ -74,22 +58,22 @@ public class RaymarchCamera : MonoBehaviour
 
         _raymarchMaterial.SetMatrix("_CamFrustum", CamFrustum(_camera));
         _raymarchMaterial.SetMatrix("_CamToWorld", _camera.cameraToWorldMatrix);
-        _raymarchMaterial.SetInt("_maxSteps", _maxSteps);
+        _raymarchMaterial.SetInt("_maxSteps", settings.maxSteps);
 
-        _raymarchMaterial.SetFloat("_epsilonMin", _epsilonMin);
-        _raymarchMaterial.SetFloat("_epsilonMax", _epsilonMax);
+        _raymarchMaterial.SetFloat("_epsilonMin", settings.epsilonMin);
+        _raymarchMaterial.SetFloat("_epsilonMax", settings.epsilonMax);
 
-        _raymarchMaterial.SetInt("_iterations", _iterations);
-        _raymarchMaterial.SetFloat("_power", _power);
+        _raymarchMaterial.SetInt("_iterations", settings.iterations);
+        _raymarchMaterial.SetFloat("_power", settings.power);
 
         _raymarchMaterial.SetVectorArray("_lights", ConvertLights(_lights));
         _raymarchMaterial.SetVectorArray("_colors", ConvertColors(_colors));
-        _raymarchMaterial.SetFloat("_colorMultiplier", _colorMultiplier);
+        _raymarchMaterial.SetFloat("_colorMultiplier", settings.colorMultiplier);
 
-        _raymarchMaterial.SetVector("_seed", new Vector4(_seedX, _seedY, _seedZ, _seedW));
-        _raymarchMaterial.SetFloat("_par", _par);
+        _raymarchMaterial.SetVector("_seed", new Vector4(settings.seedX, settings.seedY, settings.seedZ, settings.seedW));
+        _raymarchMaterial.SetFloat("_par", settings.par);
 
-        _raymarchMaterial.SetInt("_fractal", (int)_fractal);
+        _raymarchMaterial.SetInt("_fractal", (int)settings.fractal);
 
         RenderTexture.active = destination;
         GL.PushMatrix();

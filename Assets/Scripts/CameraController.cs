@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Settings settings;
+    [SerializeField] private SettingsPanel settings;
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float lookSpeed = 0.5f;

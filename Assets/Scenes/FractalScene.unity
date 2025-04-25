@@ -824,6 +824,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fd60a0d79ce4589a67d17628093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &78381150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -937,14 +940,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 3
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -2042,14 +2045,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 3
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -2430,14 +2433,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 3
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -3042,14 +3045,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -3382,6 +3385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fd60a0d79ce4589a67d17628093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &605060776
 GameObject:
   m_ObjectHideFlags: 0
@@ -3631,6 +3637,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fd60a0d79ce4589a67d17628093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &696193707
 GameObject:
   m_ObjectHideFlags: 0
@@ -3881,14 +3890,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -4080,9 +4089,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shader: {fileID: 4800000, guid: 8f0fa74f1fcd4414f99c3bebd59a216d, type: 3}
-  _maxSteps: 128
-  _epsilonMin: 0.0000001
-  _epsilonMax: 0.001
   _lights:
   - {x: 5, y: 0, z: 0}
   - {x: -5, y: 0, z: 0}
@@ -4097,15 +4103,6 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 0, g: 0, b: 1, a: 0}
   - {r: 0, g: 0, b: 1, a: 0}
-  _colorMultiplier: 2
-  _iterations: 70
-  _power: 8
-  _seedX: -0.291
-  _seedY: -0.5
-  _seedZ: -0.05
-  _seedW: -0.67
-  _par: 0
-  _fractal: 0
 --- !u!114 &829904416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5182,6 +5179,17 @@ MonoBehaviour:
   - {fileID: 64474659}
   - {fileID: 598794130}
   fractalDropdown: {fileID: 1548324419}
+  maxStepsInput: {fileID: 557379523}
+  epsilonMinInput: {fileID: 86190550}
+  epsilonMaxInput: {fileID: 448424471}
+  colorMultiplierSlider: {fileID: 78381149}
+  iterationsInput: {fileID: 774313785}
+  powerInput: {fileID: 334609700}
+  seedXSlider: {fileID: 1826711999}
+  seedYSlider: {fileID: 1034628943}
+  seedZSlider: {fileID: 1250957233}
+  seedWSlider: {fileID: 662545259}
+  parSlider: {fileID: 598794133}
 --- !u!1 &1034628940
 GameObject:
   m_ObjectHideFlags: 0
@@ -5259,6 +5267,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fd60a0d79ce4589a67d17628093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1059751980
 GameObject:
   m_ObjectHideFlags: 0
@@ -5993,6 +6004,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fd60a0d79ce4589a67d17628093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1259573896
 GameObject:
   m_ObjectHideFlags: 0
@@ -8721,6 +8735,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4890fd60a0d79ce4589a67d17628093e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1840098207
 GameObject:
   m_ObjectHideFlags: 0
