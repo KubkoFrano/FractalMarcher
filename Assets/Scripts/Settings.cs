@@ -66,9 +66,9 @@ public class Settings
 
         //Fractal
         if (PlayerPrefs.HasKey("fractal"))
-            _fractal = (Enums.Fractal)PlayerPrefs.GetInt("fractal");
+            _fractal = (Fractal)PlayerPrefs.GetInt("fractal");
         else
-            fractal = Enums.Fractal.Mandelbulb;
+            fractal = Fractal.Mandelbulb;
     }
 
     public static Settings GetInstance()
@@ -238,8 +238,8 @@ public class Settings
     }
 
     //Fractal
-    private Enums.Fractal _fractal;
-    public Enums.Fractal fractal
+    private Fractal _fractal;
+    public Fractal fractal
     {
         get
         {

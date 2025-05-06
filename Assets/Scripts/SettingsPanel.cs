@@ -51,21 +51,21 @@ public class SettingsPanel : MonoBehaviour
 
     public void SelectFractal(int fractal)
     {
-        if (fractal == (int)Enums.Fractal.Mandelbulb)
+        if (fractal == (int)Fractal.Mandelbulb)
         {
-            SetFractal(Enums.Fractal.Mandelbulb);
-            UnsetFractal(Enums.Fractal.QuaternionJuliaSet);
+            SetFractal(Fractal.Mandelbulb);
+            UnsetFractal(Fractal.QuaternionJuliaSet);
         }
-        else if (fractal == (int)Enums.Fractal.QuaternionJuliaSet)
+        else if (fractal == (int)Fractal.QuaternionJuliaSet)
         {
-            SetFractal(Enums.Fractal.QuaternionJuliaSet);
-            UnsetFractal(Enums.Fractal.Mandelbulb);
+            SetFractal(Fractal.QuaternionJuliaSet);
+            UnsetFractal(Fractal.Mandelbulb);
         }
     }
 
-    private void SetFractal(Enums.Fractal fractal)
+    private void SetFractal(Fractal fractal)
     {
-        List<GameObject> specificSettings = fractal == Enums.Fractal.Mandelbulb ? mandelbulbSettings : juliaSettings;
+        List<GameObject> specificSettings = fractal == Fractal.Mandelbulb ? mandelbulbSettings : juliaSettings;
 
         foreach (var sett in specificSettings)
         {
@@ -73,9 +73,9 @@ public class SettingsPanel : MonoBehaviour
         }
     }
 
-    private void UnsetFractal(Enums.Fractal fractal)
+    private void UnsetFractal(Fractal fractal)
     {
-        List<GameObject> specificSettings = fractal == Enums.Fractal.Mandelbulb ? mandelbulbSettings : juliaSettings;
+        List<GameObject> specificSettings = fractal == Fractal.Mandelbulb ? mandelbulbSettings : juliaSettings;
 
         foreach (var sett in specificSettings)
         {
@@ -107,7 +107,7 @@ public class SettingsPanel : MonoBehaviour
         parSlider.onValueChanged.AddListener(value => {settings.par = value; });
 
         //Fractal
-        fractalDropdown.onValueChanged.AddListener(value => { settings.fractal = (Enums.Fractal)value; });
+        fractalDropdown.onValueChanged.AddListener(value => { settings.fractal = (Fractal)value; });
     }
 
     private void LoadValues()

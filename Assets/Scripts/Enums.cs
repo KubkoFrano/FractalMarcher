@@ -1,6 +1,1 @@
-using UnityEngine;
-
-public static class Enums
-{
-    public enum Fractal { Mandelbulb, QuaternionJuliaSet };
-}
+public enum Fractal { Mandelbulb, QuaternionJuliaSet };
