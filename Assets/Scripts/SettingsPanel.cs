@@ -136,4 +136,10 @@ public class SettingsPanel : MonoBehaviour
         //Fractal
         fractalDropdown.value = (int)settings.fractal;
     }
+
+    public void ExitApp()
+    {
+        PlayerPrefs.Save();
+        Application.Quit();
+    }
 }
