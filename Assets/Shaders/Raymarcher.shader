@@ -250,8 +250,13 @@ Shader "Raymarcher"
                     return 0.0;
             }
 
-            fixed4 raymarch(float3 ro, float3 rd){
-                float t = 0;
+            float rand(float2 co)
+            {
+                return frac(sin(dot(co, float2(12.9898, 78.233))) * 43758.5453);
+            }
+
+            fixed4 raymarch(float3 ro, float3 rd, float2 uv){
+                float t = rand(uv) * 0.1;
                 int steps;
 
                 for (steps = 0; steps < _maxSteps; steps++){
