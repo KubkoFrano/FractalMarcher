@@ -225,6 +225,7 @@ Shader "Raymarcher"
             }
 
             float epsilon(float d){
+                return _epsilonMin;
                 return clamp(d / 550.0, _epsilonMin, _epsilonMax);
             }
 
@@ -270,9 +271,10 @@ Shader "Raymarcher"
                     DE(p + float3(0, 0, eps)) - DE(p - float3(0, 0, eps))
                 ));
 
-                float gray = float(steps) / float(_maxSteps);
+                float gray = 1.0 - float(steps) / float(_maxSteps) * _colorMultiplier;
 
                 // add lighting
+                return fixed4(gray, gray, gray, 1.0);
                 return fixed4(calculateColor(p, n, float3(gray, gray, gray)), 1.0);
             }
 
@@ -280,7 +282,7 @@ Shader "Raymarcher"
             {
                 float3 rayDirection = normalize(i.ray.xyz);
                 float3 rayOrigin = _WorldSpaceCameraPos;
-                fixed4 result = raymarch(rayOrigin, rayDirection);
+                fixed4 result = raymarch(rayOrigin, rayDirection, i.uv);
 
                 return result;
             }
